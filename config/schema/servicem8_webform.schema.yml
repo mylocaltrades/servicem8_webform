@@ -1,0 +1,97 @@
+webform.handler.servicem8:
+  type: mapping
+  label: 'ServiceM8 handler'
+  mapping:
+    use_global_settings:
+      type: boolean
+      label: 'Use global settings'
+    override_api_email:
+      type: string
+      label: 'Override API email'
+    override_api_key:
+      type: string
+      label: 'Override API key'
+    override_job_status:
+      type: string
+      label: 'Override job status'
+    mappings:
+      type: mapping
+      label: 'Field mappings'
+      mapping:
+        contact_first_name:
+          type: string
+          label: 'Contact first name field'
+        contact_last_name:
+          type: string
+          label: 'Contact last name field'
+        company_name:
+          type: string
+          label: 'Company name field'
+        contact_email:
+          type: string
+          label: 'Contact email field'
+        contact_mobile:
+          type: string
+          label: 'Contact mobile field'
+        contact_phone:
+          type: string
+          label: 'Contact phone field'
+        job_address:
+          type: string
+          label: 'Job address field'
+        description:
+          type: string
+          label: 'Description field'
+    custom_mappings:
+      type: text
+      label: 'Custom mappings'
+    job_source_field_key:
+      type: string
+      label: 'Job source field key'
+    badge_mappings:
+      type: text
+      label: 'Badge mappings'
+    file_upload_field_key:
+      type: string
+      label: 'File upload field key'
+    success_message:
+      type: string
+      label: 'Success message'
+    error_message:
+      type: string
+      label: 'Error message'
+    send_notifications:
+      type: boolean
+      label: 'Send ServiceM8 notifications'
+    check_duplicates:
+      type: boolean
+      label: 'Check for duplicate contacts'
+    debug:
+      type: boolean
+      label: 'Debug mode'
+
+servicem8_webform.settings:
+  type: config_object
+  label: 'ServiceM8 Webform settings'
+  mapping:
+    servicem8_email:
+      type: string
+      label: 'ServiceM8 account email'
+    servicem8_api_key:
+      type: string
+      label: 'API Key'
+    default_job_status:
+      type: string
+      label: 'Default job status'
+    enable_notifications:
+      type: boolean
+      label: 'Enable ServiceM8 notifications'
+    cache_badges:
+      type: boolean
+      label: 'Cache badge data'
+    cache_duration:
+      type: string
+      label: 'Cache duration in seconds'
+    debug_mode:
+      type: boolean
+      label: 'Global debug mode'

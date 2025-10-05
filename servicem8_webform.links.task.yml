@@ -1,0 +1,34 @@
+servicem8_webform.settings:
+  title: 'Settings'
+  route_name: servicem8_webform.settings
+  base_route: servicem8_webform.settings
+
+servicem8_webform.field_reference:
+  title: 'Field Reference'
+  route_name: servicem8_webform.field_reference
+  base_route: servicem8_webform.settings
+  weight: 10
+
+servicem8_webform.help_tab:
+  title: 'Help'
+  route_name: help.page
+  route_parameters:
+    name: 'servicem8_webform'
+  base_route: servicem8_webform.settings
+  weight: 20
+
+servicem8_webform.logs_tab:
+  title: 'Recent Logs'
+  route_name: dblog.overview
+  base_route: servicem8_webform.settings
+  weight: 30
+  options:
+    query:
+      type:
+        - servicem8_webform
+
+servicem8_webform.api_test:
+  title: 'Test API'
+  route_name: servicem8_webform.api_test
+  base_route: servicem8_webform.settings
+  weight: 15

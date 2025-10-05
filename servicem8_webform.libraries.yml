@@ -1,0 +1,10 @@
+servicem8_loader:
+  version: 1.x
+  css:
+    theme:
+      css/servicem8-loader.css: {}
+  js:
+    js/servicem8-loader.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

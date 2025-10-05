@@ -1,0 +1,17 @@
+# Debug files
+/debug/
+*.txt
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*~

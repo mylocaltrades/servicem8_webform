@@ -1,0 +1,14 @@
+administer servicem8:
+  title: 'Administer ServiceM8 settings'
+  description: 'Configure ServiceM8 API credentials and default settings. Warning: This permission has security implications as it provides access to API keys.'
+  restrict access: true
+
+view servicem8 logs:
+  title: 'View ServiceM8 integration logs'
+  description: 'View debug information and logs for ServiceM8 form submissions'
+  restrict access: false
+
+configure servicem8 handlers:
+  title: 'Configure ServiceM8 webform handlers'
+  description: 'Add and configure ServiceM8 handlers on individual webforms'
+  restrict access: false

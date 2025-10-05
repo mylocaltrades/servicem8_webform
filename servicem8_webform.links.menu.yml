@@ -1,0 +1,35 @@
+servicem8_webform.settings:
+  title: 'ServiceM8 Integration'
+  description: 'Configure global ServiceM8 API credentials and default job settings for webform submissions.'
+  parent: system.admin_config_services
+  route_name: servicem8_webform.settings
+  weight: 10
+
+servicem8_webform.help:
+  title: 'ServiceM8 Help'
+  description: 'View help and documentation for ServiceM8 Webform Integration.'
+  parent: system.admin_help
+  route_name: help.page
+  route_parameters:
+    name: servicem8_webform
+  weight: 100
+  options:
+    attributes:
+      class: ['servicem8-help-link']
+
+servicem8_webform.webform_handlers:
+  title: 'ServiceM8 Handlers'
+  description: 'View all webforms using ServiceM8 handlers.'
+  parent: entity.webform.collection
+  route_name: entity.webform.collection
+  weight: 50
+  options:
+    query:
+      handler: servicem8
+	  
+servicem8_webform.field_reference:
+  title: 'ServiceM8 Field Reference'
+  description: 'View all available ServiceM8 fields for mapping.'
+  parent: help.main
+  route_name: servicem8_webform.field_reference
+  weight: 100

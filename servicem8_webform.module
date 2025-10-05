@@ -1,0 +1,148 @@
+<?php
+
+/**
+ * @file
+ * ServiceM8 Webform Integration module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_help().
+ */
+function servicem8_webform_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help page.
+    case 'help.page.servicem8_webform':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The ServiceM8 Webform Integration module allows you to automatically create ServiceM8 jobs from Drupal webform submissions. This integration streamlines your workflow by eliminating manual data entry between your website and ServiceM8.') . '</p>';
+      
+      $output .= '<h3>' . t('Features') . '</h3>';
+      $output .= '<ul>';
+      $output .= '<li>' . t('Automatic job creation in ServiceM8 from form submissions') . '</li>';
+      $output .= '<li>' . t('Flexible field mapping between Webform and ServiceM8') . '</li>';
+      $output .= '<li>' . t('Support for file attachments') . '</li>';
+      $output .= '<li>' . t('Badge mapping for lead source tracking') . '</li>';
+      $output .= '<li>' . t('Per-form or global API configuration') . '</li>';
+      $output .= '<li>' . t('Connection testing and debugging tools') . '</li>';
+      $output .= '</ul>';
+      
+      $output .= '<h3>' . t('Setup Instructions') . '</h3>';
+      $output .= '<ol>';
+      $output .= '<li>' . t('<strong>Get your API key:</strong> Log into ServiceM8 and navigate to Settings → Integrations → API') . '</li>';
+      $output .= '<li>' . t('<strong>Configure global settings:</strong> Visit the <a href=":settings">ServiceM8 Settings</a> page to enter your API credentials', [':settings' => Url::fromRoute('servicem8_webform.settings')->toString()]) . '</li>';
+      $output .= '<li>' . t('<strong>Add handler to form:</strong> Edit any webform and add the "ServiceM8 Job Creator" handler under Settings → Emails/Handlers') . '</li>';
+      $output .= '<li>' . t('<strong>Map fields:</strong> Configure which webform fields should map to ServiceM8 job fields') . '</li>';
+      $output .= '<li>' . t('<strong>Test connection:</strong> Use the "Test Connection" button to verify your API key is working') . '</li>';
+      $output .= '<li>' . t('<strong>(Optional) Configure badges:</strong> Set up badge mappings in ServiceM8 for lead source tracking') . '</li>';
+      $output .= '</ol>';
+      
+      $output .= '<h3>' . t('Troubleshooting') . '</h3>';
+      $output .= '<ul>';
+      $output .= '<li>' . t('Enable debug mode in the handler settings to log detailed information') . '</li>';
+      $output .= '<li>' . t('Check the <a href=":logs">Recent log messages</a> for error details', [':logs' => Url::fromRoute('dblog.overview')->toString()]) . '</li>';
+      $output .= '<li>' . t('Verify your API key has the necessary permissions in ServiceM8') . '</li>';
+      $output .= '<li>' . t('Ensure required fields (First Name or Company Name) are mapped') . '</li>';
+      $output .= '</ul>';
+      
+      $output .= '<h3>' . t('Support') . '</h3>';
+      $output .= '<p>' . t('For ServiceM8 API documentation, visit <a href=":docs" target="_blank">developer.servicem8.com</a>', [':docs' => 'https://developer.servicem8.com']) . '</p>';
+      
+      return $output;
+
+    // Settings form help.
+    case 'servicem8_webform.settings':
+      $output = '';
+      $output .= '<p>' . t('Configure your ServiceM8 API credentials here. These settings will be available as defaults for all webforms on your site.') . '</p>';
+      $output .= '<p>' . t('<strong>Note:</strong> Individual webform handlers can override these global settings if needed.') . '</p>';
+      $output .= '<h4>' . t('Where to find your API key:') . '</h4>';
+      $output .= '<ol>';
+      $output .= '<li>' . t('Log into your ServiceM8 account') . '</li>';
+      $output .= '<li>' . t('Navigate to Settings → Integrations → API') . '</li>';
+      $output .= '<li>' . t('Generate a new API key if you haven\'t already') . '</li>';
+      $output .= '<li>' . t('Copy the API key and paste it here') . '</li>';
+      $output .= '</ol>';
+      return $output;
+
+    default:
+      return '';
+  }
+}
+
+/**
+ * Implements hook_webform_submission_form_alter().
+ */
+function servicem8_webform_webform_submission_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $webform_submission = $form_state->getFormObject()->getEntity();
+  $webform = $webform_submission->getWebform();
+  
+  // Check if this webform has ServiceM8 handler
+  $handlers = $webform->getHandlers();
+  foreach ($handlers as $handler) {
+    if ($handler instanceof \Drupal\servicem8_webform\Plugin\WebformHandler\ServiceM8WebformHandler) {
+      // Just attach the library - no settings needed
+      $form['#attached']['library'][] = 'servicem8_webform/servicem8_loader';
+      break;
+    }
+  }
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function servicem8_webform_requirements($phase) {
+  $requirements = [];
+  
+  if ($phase == 'runtime') {
+    $config = \Drupal::config('servicem8_webform.settings');
+    $api_key = $config->get('servicem8_api_key');
+    
+    if (empty($api_key)) {
+      $requirements['servicem8_webform_api'] = [
+        'title' => t('ServiceM8 Webform Integration'),
+        'value' => t('Not configured'),
+        'description' => t('The ServiceM8 API key is not configured. <a href=":url">Configure it now</a>.', [
+          ':url' => Url::fromRoute('servicem8_webform.settings')->toString(),
+        ]),
+        'severity' => REQUIREMENT_WARNING,
+      ];
+    }
+    else {
+      $requirements['servicem8_webform_api'] = [
+        'title' => t('ServiceM8 Webform Integration'),
+        'value' => t('Configured'),
+        'description' => t('ServiceM8 API key is configured.'),
+        'severity' => REQUIREMENT_OK,
+      ];
+    }
+    
+    // Check if Webform module is enabled and configured.
+    if (!\Drupal::moduleHandler()->moduleExists('webform')) {
+      $requirements['servicem8_webform_dependency'] = [
+        'title' => t('ServiceM8 Webform Dependencies'),
+        'value' => t('Missing dependency'),
+        'description' => t('The Webform module is required but not installed.'),
+        'severity' => REQUIREMENT_ERROR,
+      ];
+    }
+  }
+  
+  return $requirements;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function servicem8_webform_theme() {
+  return [
+    'servicem8_webform_help' => [
+      'variables' => [
+        'api_configured' => FALSE,
+        'forms_count' => 0,
+      ],
+    ],
+  ];
+}

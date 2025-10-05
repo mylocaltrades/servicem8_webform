@@ -1,0 +1,10 @@
+name: 'ServiceM8 Webform Integration'
+type: module
+description: 'Integrate Drupal Webforms with ServiceM8 to automatically create jobs from form submissions.'
+package: Webform
+core_version_requirement: ^9.3 || ^10 || ^11
+configure: servicem8_webform.settings
+dependencies:
+  - drupal:system (>=9.3)
+  - webform:webform (>=6.1)
+php: 7.4

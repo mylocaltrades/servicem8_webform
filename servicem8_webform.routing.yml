@@ -1,0 +1,29 @@
+servicem8_webform.settings:
+  path: '/admin/config/services/servicem8'
+  defaults:
+    _form: '\Drupal\servicem8_webform\Form\ServiceM8SettingsForm'
+    _title: 'ServiceM8 Integration Settings'
+  requirements:
+    _permission: 'administer servicem8'
+  options:
+    _admin_route: TRUE
+
+servicem8_webform.field_reference:
+  path: '/admin/help/servicem8/fields'
+  defaults:
+    _controller: '\Drupal\servicem8_webform\Controller\ServiceM8HelpController::fieldReference'
+    _title: 'ServiceM8 Field Reference'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+
+servicem8_webform.api_test:
+  path: '/admin/config/services/servicem8/test'
+  defaults:
+    _controller: '\Drupal\servicem8_webform\Controller\ServiceM8HelpController::apiTest'
+    _title: 'Test API'
+  requirements:
+    _permission: 'administer servicem8'
+  options:
+    _admin_route: TRUE

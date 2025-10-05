@@ -1,0 +1,50 @@
+.servicem8-loading-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+}
+
+#servicem8-loader {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.servicem8-loading-content {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+}
+
+.servicem8-loading-content h3 {
+  margin: 20px 0 10px;
+  color: #333;
+}
+
+.servicem8-loading-content p {
+  margin: 0;
+  color: #666;
+}
+
+.servicem8-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: servicem8-spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes servicem8-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
