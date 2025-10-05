@@ -27,8 +27,5 @@ Integrates Drupal Webforms with ServiceM8 to automatically create jobs/quotes fr
 3. Add the ServiceM8 handler to any webform
 4. Map your form fields to ServiceM8 fields
 
-## Usage
-See [documentation](docs/USAGE.md) for detailed setup instructions.
-
 ## License
 GPL-2.0-or-later
